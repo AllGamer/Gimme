@@ -1,4 +1,4 @@
-package aetaric.gimme;
+package com.dustinessington.gimme;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
