@@ -86,24 +86,24 @@ public class gimme extends JavaPlugin
 		}
     }
     
-    public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String arg) 
+    public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String[] arg) 
 	{
-    	ConcurrentHashMap<String, ItemStack> stackmap = new ConcurrentHashMap<String, ItemStack>();
+    	ConcurrentHashMap<String[], ItemStack> stackmap = new ConcurrentHashMap<String[], ItemStack>();;
     	stackmap.put(arg, null);
-    	ItemStack args = stackmap.get(arg);
+    	ItemStack item = stackmap.get(arg);
     	Player player = (Player) sender;
 		String command = commandArg.getName().toLowerCase();
 
 		if (command.equalsIgnoreCase("gimme")) 
 		{
-			if (gimme.Permissions.has(player, "gimme.gimme") | (gimme.Permissions.has(player, "gimme.*") | gimme.Permissions.has(player, "*"))) 
+			if (gimme.Permissions.has(player, "gimme.gimme") || (gimme.Permissions.has(player, "gimme.*") || gimme.Permissions.has(player, "*"))) 
 			{
 				@SuppressWarnings("unused")
-				boolean check = itemdeny(args);
+				boolean check = itemdeny(item);
 				if (check = false)
 				{
 					sender.sendMessage("Here you go!");
-					((Player) sender).getInventory().addItem(args);
+					((Player) sender).getInventory().addItem(item);
 				}
 			} 
 			else 

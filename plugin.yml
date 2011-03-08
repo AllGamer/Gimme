@@ -8,4 +8,4 @@ commands:
     gimme:
         description: Ban a user with AGBS
         usage: |
-               /<command> [item]
+               /<command> [item] [test]
