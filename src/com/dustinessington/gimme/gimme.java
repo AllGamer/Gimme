@@ -1,10 +1,7 @@
 package com.dustinessington.gimme;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -13,18 +10,14 @@ import com.dustinessington.gimme.gimmeConfiguration;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.Event.Priority;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
-import org.bukkit.plugin.PluginManager;
+//import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
-import com.dustinessington.gimme.ItemDb;
 
 
 // permissions 2.4 imports
@@ -39,7 +32,6 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class gimme extends JavaPlugin
 {
-    private final gimmePlayerListener playerListener = new gimmePlayerListener(this);
     private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
     private final Logger log = Logger.getLogger("Minecraft");
     public static PermissionHandler Permissions = null;
@@ -49,15 +41,10 @@ public class gimme extends JavaPlugin
     public static Configuration config;
     public static String id = null;
 
-    public gimme(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) 
-    {
+   // public gimme(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) 
+   // {
     	
-    }
-
-    private void user(Player base)
-	{
-		this.base = base;
-	}
+  //  }
 
     public void configInit()
 	{
@@ -104,7 +91,21 @@ public class gimme extends JavaPlugin
 		return false;
 	}
     
-	public static String make(String[] split, int startingIndex) 
+    public boolean itemdeny(ItemStack[] stack)
+    {
+    	gimme.config.load();
+		String x = gimme.config.getNodeList("denied", null).toString();
+		if (stack.toString().contains(x))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+    }   
+    
+    public static String make(String[] split, int startingIndex) 
 	{
 		for (; startingIndex < split.length; startingIndex++) 
 		{
@@ -116,43 +117,21 @@ public class gimme extends JavaPlugin
 		return id;
 	}
     
-    public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String[] args) 
+    public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, ItemStack[] arg) 
 	{
 		Player player = (Player) sender;
-		Server server = getServer();
 		String command = commandArg.getName().toLowerCase();
 
 		if (command.equalsIgnoreCase("gimme")) 
 		{
 			if (gimme.Permissions.has(player, "gimme.gimme")) 
 			{
-				
-				if (args.length > 2) 
+				boolean check = itemdeny(arg);
+				if (check = false)
 				{
-					gimme.config.load();
-					String[] x = gimme.config.getString("denied").split(",");
-					String[] itemArgs = args[0].split("[^a-zA-Z0-9]");
-					ItemStack stack = null;
-					try 
-					{
-						stack = ItemDb.get(itemArgs[0]);
-					} 
-					catch (Exception e) 
-					{
-						e.printStackTrace();
-					}
-					if ((stack).contains(gimme.config.getString("denied").split(",")))
-					{
-						sender.sendMessage("Giving " + args[1] + " of " + args[0] + " to " + ((Player) sender).getDisplayName() + ".");
-						((Player) sender).getInventory().addItem(stack);
-					}
-					
-				} 
-				else 
-				{
-					player.sendMessage("Correct usage is /gimme [id] [amount]");
+					sender.sendMessage("Here you go!");
+					((Player) sender).getInventory().addItem(arg);
 				}
-				
 			} 
 			else 
 			{
@@ -167,10 +146,9 @@ public class gimme extends JavaPlugin
     public void onEnable() 
     {
         // Register our events
-        PluginManager pm = getServer().getPluginManager();
+        //PluginManager pm = getServer().getPluginManager();
         setupPermissions();
         configInit();
-
         log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
     }
     

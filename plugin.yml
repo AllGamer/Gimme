@@ -1,5 +1,11 @@
 name: gimme
 
-main: aetaric.gimme
+main: com.dustinessington.gimme.gimme
 
 version: 0.1
+
+commands:
+    gimme:
+        description: Ban a user with AGBS
+        usage: |
+               /<command> [item]
