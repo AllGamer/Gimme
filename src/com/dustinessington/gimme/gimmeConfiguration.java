@@ -37,9 +37,8 @@ public class gimmeConfiguration
 					BufferedWriter out = new BufferedWriter(fstream);
 
 					out.write("#gimme Configuration");
-					out.write("");
-					out.write("denied:\n");
 					out.write("\n");
+					out.write("denied:\n");
 					out.write("#Put blocks here\n");
 					out.write("#    - 7\n");
 				

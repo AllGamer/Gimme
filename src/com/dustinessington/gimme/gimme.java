@@ -2,20 +2,18 @@ package com.dustinessington.gimme;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 
 import com.dustinessington.gimme.gimmeConfiguration;
 
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
-//import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
@@ -53,11 +51,6 @@ public class gimme extends JavaPlugin
 		confSetup = new gimmeConfiguration(this.getDataFolder(), this);
 	}
     
-    public ItemStack getItemInHand()
-	{
-		return base.getItemInHand();
-	}
- 
     public void setupPermissions() 
 	{
 		Plugin agbs = this.getServer().getPluginManager().getPlugin("Permissions");
@@ -78,24 +71,12 @@ public class gimme extends JavaPlugin
 			}
 		}
 	}
-
-    public boolean arraySearch(Player[] list, Player target) 
-	{
-		for (Player p : list)
-		{
-			if (p.equals(target)) 
-			{
-				return true;
-			}
-		}
-		return false;
-	}
     
-    public boolean itemdeny(ItemStack[] stack)
+    public boolean itemdeny(ItemStack args)
     {
     	gimme.config.load();
 		String x = gimme.config.getNodeList("denied", null).toString();
-		if (stack.toString().contains(x))
+		if (args.toString().contains(x))
 		{
 			return true;
 		}
@@ -103,34 +84,26 @@ public class gimme extends JavaPlugin
 		{
 			return false;
 		}
-    }   
+    }
     
-    public static String make(String[] split, int startingIndex) 
+    public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String arg) 
 	{
-		for (; startingIndex < split.length; startingIndex++) 
-		{
-			if (startingIndex == 1)
-				id += "" + split[startingIndex];
-			else
-				id += " " + split[startingIndex];
-		}
-		return id;
-	}
-    
-    public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, ItemStack[] arg) 
-	{
-		Player player = (Player) sender;
+    	ConcurrentHashMap<String, ItemStack> stackmap = new ConcurrentHashMap<String, ItemStack>();
+    	stackmap.put(arg, null);
+    	ItemStack args = stackmap.get(arg);
+    	Player player = (Player) sender;
 		String command = commandArg.getName().toLowerCase();
 
 		if (command.equalsIgnoreCase("gimme")) 
 		{
-			if (gimme.Permissions.has(player, "gimme.gimme")) 
+			if (gimme.Permissions.has(player, "gimme.gimme") | (gimme.Permissions.has(player, "gimme.*") | gimme.Permissions.has(player, "*"))) 
 			{
-				boolean check = itemdeny(arg);
+				@SuppressWarnings("unused")
+				boolean check = itemdeny(args);
 				if (check = false)
 				{
 					sender.sendMessage("Here you go!");
-					((Player) sender).getInventory().addItem(arg);
+					((Player) sender).getInventory().addItem(args);
 				}
 			} 
 			else 
@@ -149,6 +122,7 @@ public class gimme extends JavaPlugin
         //PluginManager pm = getServer().getPluginManager();
         setupPermissions();
         configInit();
+		confSetup.setupConfigs();
         log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
     }
     
