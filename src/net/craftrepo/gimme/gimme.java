@@ -45,13 +45,6 @@ public class gimme extends JavaPlugin
 	public static Configuration config;
 	public static String id = null;
 
-	public gimme(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader)
-	{
-	}
-	public gimme(gimme plugin) 
-	{
-		this.plugin = plugin;
-	}
 
 	public void configInit()
 	{
