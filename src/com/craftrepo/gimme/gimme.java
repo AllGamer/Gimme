@@ -26,7 +26,7 @@ import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 /**
- * CraftRepo Bans for Bukkit
+ * CraftRepo gimme for Bukkit
  * @author AllGamer
  * 
  * Copyright 2011 AllGamer, LLC.
@@ -61,20 +61,20 @@ public class gimme extends JavaPlugin
 
 	public void setupPermissions() 
 	{
-		Plugin agbs = this.getServer().getPluginManager().getPlugin("Permissions");
+		Plugin perms = this.getServer().getPluginManager().getPlugin("Permissions");
 		PluginDescriptionFile pdfFile = this.getDescription();
 
 		if (gimme.Permissions == null) 
 		{
-			if (agbs != null) 
+			if (perms != null) 
 			{
-				this.getServer().getPluginManager().enablePlugin(agbs);
-				gimme.Permissions = ((Permissions) agbs).getHandler();
+				this.getServer().getPluginManager().enablePlugin(perms);
+				gimme.Permissions = ((Permissions) perms).getHandler();
 				log.info(logPrefix + " version " + pdfFile.getVersion() + " Permissions detected...");
 			}
 			else 
 			{
-				log.severe(logPrefix + " version " + pdfFile.getVersion() + " not enabled. Permissions not detected");
+				log.severe(logPrefix + " version " + pdfFile.getVersion() + " not enabled. Permissions not detected.");
 				this.getServer().getPluginManager().disablePlugin(this);
 			}
 		}
@@ -127,8 +127,6 @@ public class gimme extends JavaPlugin
 
 	public void onEnable() 
 	{
-		// Register our events
-		//PluginManager pm = getServer().getPluginManager();
 		setupPermissions();
 		configInit();
 		confSetup.setupConfigs();
@@ -137,20 +135,16 @@ public class gimme extends JavaPlugin
 
 	public void onDisable() 
 	{
-
 		log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
 	}
 
 	public boolean isDebugging(final Player player) 
 	{
 		if (debugees.containsKey(player)) 
-		{
 			return debugees.get(player);
-		} 
-		else 
-		{
-			return false;
-		}
+
+		return false;
+
 	}
 
 	public void setDebugging(final Player player, final boolean value) 
