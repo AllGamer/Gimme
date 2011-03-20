@@ -23,9 +23,11 @@ import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 /**
- * gimme for Bukkit
- *
- * @author aetaric
+ * CraftRepo Bans for Bukkit
+ * @author AllGamer
+ * 
+ * Copyright 2011 AllGamer, LLC.
+ * See LICENSE for licensing information.
  */
 
 public class gimme extends JavaPlugin
