@@ -99,12 +99,18 @@ public class gimme extends JavaPlugin
 		{
 			if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme") || (gimme.Permissions.has(player, "gimme.*") || gimme.Permissions.has(player, "*"))) 
 			{
-				@SuppressWarnings("unused")
-				boolean check = itemdeny(item);
-				if (check = false)
+				if (arg.length == 2) {
+					@SuppressWarnings("unused")
+					boolean check = itemdeny(item);
+					if (check = false)
+					{
+						player.sendMessage("Here you go!");
+						player.getInventory().addItem(item);
+					}
+				}
+				else
 				{
-					player.sendMessage("Here you go!");
-					player.getInventory().addItem(item);
+					player.sendMessage("Correct usage is /gimme [item]");
 				}
 			} 
 			else 
