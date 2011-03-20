@@ -10,6 +10,7 @@ import com.dustinessington.gimme.gimmeConfiguration;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.Plugin;
@@ -32,28 +33,31 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class gimme extends JavaPlugin
 {
-    private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
-    private final Logger log = Logger.getLogger("Minecraft");
-    public static PermissionHandler Permissions = null;
-    public static String logPrefix = "gimme";
-    private Player base;
-    private gimmeConfiguration confSetup;
-    public static Configuration config;
-    public static String id = null;
+	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
+	private final Logger log = Logger.getLogger("Minecraft");
+	public static PermissionHandler Permissions = null;
+	public static String logPrefix = "gimme";
+	private gimmeConfiguration confSetup;
+	public final gimme plugin;
+	public static Configuration config;
+	public static String id = null;
 
-   // public gimme(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) 
-   // {
-    	
-  //  }
+	// public gimme(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) 
+	// {
 
-    public void configInit()
+	//  }
+	public gimme(gimme plugin) {
+		this.plugin = plugin;
+	}
+
+	public void configInit()
 	{
 		getDataFolder().mkdirs();
 		config = new Configuration(new File(this.getDataFolder(), "config.yml"));
 		confSetup = new gimmeConfiguration(this.getDataFolder(), this);
 	}
-    
-    public void setupPermissions() 
+
+	public void setupPermissions() 
 	{
 		Plugin agbs = this.getServer().getPluginManager().getPlugin("Permissions");
 		PluginDescriptionFile pdfFile = this.getDescription();
@@ -73,83 +77,78 @@ public class gimme extends JavaPlugin
 			}
 		}
 	}
-    
-    public boolean itemdeny(ItemStack args)
-    {
-    	gimme.config.load();
+
+	public boolean itemdeny(ItemStack args)
+	{
+		gimme.config.load();
 		String x = gimme.config.getNodeList("denied", null).toString();
 		if (args.toString().contains(x))
-		{
 			return true;
-		}
-		else
-		{
-			return false;
-		}
-    }
-    
-    public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String[] arg) 
-	{
-    	ConcurrentHashMap<String[], ItemStack> stackmap = new ConcurrentHashMap<String[], ItemStack>();;
-    	stackmap.put(arg, null);
-    	ItemStack item = stackmap.get(arg);
-    	Player player = (Player) sender;
-		String command = commandArg.getName().toLowerCase();
 
+		return false;
+	}
+
+	public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String[] arg) 
+	{
+		ConcurrentHashMap<String[], ItemStack> stackmap = new ConcurrentHashMap<String[], ItemStack>();;
+		stackmap.put(arg, null);
+		ItemStack item = stackmap.get(arg);
+		Player player = (Player) sender;
+		String command = commandArg.getName().toLowerCase();
 		if (command.equalsIgnoreCase("gimme")) 
 		{
-			if (gimme.Permissions.has(player, "gimme.gimme") || (gimme.Permissions.has(player, "gimme.*") || gimme.Permissions.has(player, "*"))) 
+			if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme") || (gimme.Permissions.has(player, "gimme.*") || gimme.Permissions.has(player, "*"))) 
 			{
 				@SuppressWarnings("unused")
 				boolean check = itemdeny(item);
 				if (check = false)
 				{
-					sender.sendMessage("Here you go!");
-					((Player) sender).getInventory().addItem(item);
+					player.sendMessage("Here you go!");
+					player.getInventory().addItem(item);
 				}
 			} 
 			else 
 			{
 				player.sendMessage("You don't have access to this command.");
-				log.info(logPrefix + " " + player + " tried to use command " + command + "! denied access." );
+				log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
 			}
 			return true;
 		}
 		return true;
 	}
-    
-    public void onEnable() 
-    {
-        // Register our events
-        //PluginManager pm = getServer().getPluginManager();
-        setupPermissions();
-        configInit();
-		confSetup.setupConfigs();
-        log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
-    }
-    
-    public void onDisable() 
-    {
- 
-    	log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
-    }
-    
-    public boolean isDebugging(final Player player) 
-    {
-        if (debugees.containsKey(player)) 
-        {
-            return debugees.get(player);
-        } 
-        else 
-        {
-            return false;
-        }
-    }
 
-    public void setDebugging(final Player player, final boolean value) 
-    {
-        debugees.put(player, value);
-    }
+	public void onEnable() 
+	{
+		// Register our events
+		//PluginManager pm = getServer().getPluginManager();
+		setupPermissions();
+		configInit();
+		confSetup.setupConfigs();
+		log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
+	}
+
+	public void onDisable() 
+	{
+
+		log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
+	}
+
+	public boolean isDebugging(final Player player) 
+	{
+		if (debugees.containsKey(player)) 
+		{
+			return debugees.get(player);
+		} 
+		else 
+		{
+			return false;
+		}
+	}
+
+	public void setDebugging(final Player player, final boolean value) 
+	{
+		debugees.put(player, value);
+	}
 
 }
 
