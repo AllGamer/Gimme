@@ -1,4 +1,4 @@
-package com.dustinessington.gimme;
+package com.craftrepo.gimme;
 
 import java.io.*;
 import java.util.HashMap;
@@ -6,8 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 
-import com.dustinessington.gimme.gimmeConfiguration;
+import com.craftrepo.gimme.gimmeConfiguration;
 
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Item;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
@@ -38,15 +40,15 @@ public class gimme extends JavaPlugin
 	public static PermissionHandler Permissions = null;
 	public static String logPrefix = "gimme";
 	private gimmeConfiguration confSetup;
-	public final gimme plugin;
+	public gimme plugin;
 	public static Configuration config;
 	public static String id = null;
 
-	// public gimme(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) 
-	// {
-
-	//  }
-	public gimme(gimme plugin) {
+	public gimme(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader)
+	{
+	}
+	public gimme(gimme plugin) 
+	{
 		this.plugin = plugin;
 	}
 

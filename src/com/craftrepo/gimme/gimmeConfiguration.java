@@ -1,4 +1,4 @@
-package com.dustinessington.gimme;
+package com.craftrepo.gimme;
 
 import java.io.BufferedWriter;
 import java.io.File;
