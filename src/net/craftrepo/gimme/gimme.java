@@ -88,9 +88,11 @@ public class gimme extends JavaPlugin
 		{
 			if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme") || (gimme.Permissions.has(player, "gimme.*") || gimme.Permissions.has(player, "*"))) 
 			{
-					ItemStack itemstack = new ItemStack(Integer.valueOf(arg[0]));
-					@SuppressWarnings("unused")
-					boolean check = itemdeny(Integer.valueOf(arg[0]));
+				ItemStack itemstack = new ItemStack(Integer.valueOf(arg[0]));
+				@SuppressWarnings("unused")
+				boolean check = itemdeny(Integer.valueOf(arg[0]));
+				if (arg.length >= 1 && arg.length <= 2)
+				{
 					if (!(itemdeny(Integer.valueOf(arg[0]))))
 					{
 						if (arg.length == 1) 
@@ -101,8 +103,8 @@ public class gimme extends JavaPlugin
 						{
 							itemstack.setAmount(Integer.parseInt(arg[1]));
 						}
-							player.sendMessage("Here you go!");
-							inventory.addItem(itemstack);
+						player.sendMessage("Here you go!");
+						inventory.addItem(itemstack);
 					}
 				}
 				else
@@ -117,32 +119,33 @@ public class gimme extends JavaPlugin
 			}
 			return true;
 		}
-
-	public void onEnable() 
-	{
-		setupPermissions();
-		configInit();
-		confSetup.setupConfigs();
-		log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
+		return true;
 	}
+		public void onEnable() 
+		{
+			setupPermissions();
+			configInit();
+			confSetup.setupConfigs();
+			log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
+		}
 
-	public void onDisable() 
-	{
-		log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
+		public void onDisable() 
+		{
+			log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
+		}
+
+		public boolean isDebugging(final Player player) 
+		{
+			if (debugees.containsKey(player)) 
+				return debugees.get(player);
+
+			return false;
+		}
+
+		public void setDebugging(final Player player, final boolean value) 
+		{
+			debugees.put(player, value);
+		}
+
 	}
-
-	public boolean isDebugging(final Player player) 
-	{
-		if (debugees.containsKey(player)) 
-			return debugees.get(player);
-
-		return false;
-	}
-
-	public void setDebugging(final Player player, final boolean value) 
-	{
-		debugees.put(player, value);
-	}
-
-}
 
