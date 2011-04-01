@@ -1,6 +1,6 @@
-name: gimme
+name: Gimme
 
-main: net.craftrepo.gimme.gimme
+main: net.craftrepo.Gimme.gimme
 
 version: 0.1
 

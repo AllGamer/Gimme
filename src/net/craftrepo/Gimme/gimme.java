@@ -1,10 +1,8 @@
-package net.craftrepo.gimme;
+package net.craftrepo.Gimme;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.logging.Logger;
-
-import net.craftrepo.gimme.gimmeConfiguration;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -67,13 +65,30 @@ public class gimme extends JavaPlugin
 		}
 	}
 
+	public static String strip(String s) 
+	{
+		String good = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		String result = "";
+		for ( int i = 0; i < s.length(); i++ ) 
+		{
+			if ( good.indexOf(s.charAt(i)) >= 0 )
+				result += s.charAt(i);
+		}
+		return result;
+	}
+	
 	public boolean itemdeny(int args)
 	{
 		gimme.config.load();
 		String x = gimme.config.getProperty("denied").toString();
-		if (x.contains(Integer.toString(args)))
+		String[] blacklist = x.split(" ");
+		for (String s : blacklist)
 		{
-			return true;
+			String black = strip(s);
+			if (Integer.parseInt(black) == args)
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -102,7 +117,7 @@ public class gimme extends JavaPlugin
 						{
 							itemstack.setAmount(Integer.parseInt(arg[1]));
 						}
-						log.info(logPrefix + " Giving " + player + " " + itemstack.toString());
+						//log.info(logPrefix + " Giving " + player + " " + itemstack.toString());
 						player.sendMessage("Here you go!");
 						inventory.addItem(itemstack);
 					}

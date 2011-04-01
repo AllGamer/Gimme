@@ -1,4 +1,4 @@
-package net.craftrepo.gimme;
+package net.craftrepo.Gimme;
 
 import java.io.BufferedWriter;
 import java.io.File;
