@@ -44,11 +44,12 @@ public class gimmeConfiguration
 					FileWriter fstream = new FileWriter(config);
 					BufferedWriter out = new BufferedWriter(fstream);
 
-					out.write("#gimme Configuration");
+					out.write("#Gimme Configuration");
 					out.write("\n");
 					out.write("denied:\n");
 					out.write("#Put blocks here\n");
-					out.write("#    - 7\n");
+					out.write("    - 7\n");
+					out.write("    - 46\n");
 				
 				
 					out.close();

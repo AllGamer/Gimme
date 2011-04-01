@@ -70,8 +70,7 @@ public class gimme extends JavaPlugin
 	public boolean itemdeny(int args)
 	{
 		gimme.config.load();
-		String x = gimme.config.getNodeList("denied", null).toString();
-		log.info(logPrefix + " " + Integer.toString(args));
+		String x = gimme.config.getProperty("denied").toString();
 		if (x.contains(Integer.toString(args)))
 		{
 			return true;
@@ -88,11 +87,11 @@ public class gimme extends JavaPlugin
 		{
 			if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme") || (gimme.Permissions.has(player, "gimme.*") || gimme.Permissions.has(player, "*"))) 
 			{
-				ItemStack itemstack = new ItemStack(Integer.valueOf(arg[0]));
-				@SuppressWarnings("unused")
-				boolean check = itemdeny(Integer.valueOf(arg[0]));
 				if (arg.length >= 1 && arg.length <= 2)
 				{
+					ItemStack itemstack = new ItemStack(Integer.parseInt(arg[0]));
+					@SuppressWarnings("unused")
+					boolean check = itemdeny(Integer.valueOf(arg[0]));
 					if (!(itemdeny(Integer.valueOf(arg[0]))))
 					{
 						if (arg.length == 1) 
@@ -103,8 +102,14 @@ public class gimme extends JavaPlugin
 						{
 							itemstack.setAmount(Integer.parseInt(arg[1]));
 						}
+						log.info(logPrefix + " Giving " + player + " " + itemstack.toString());
 						player.sendMessage("Here you go!");
 						inventory.addItem(itemstack);
+					}
+					else
+					{
+						player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+						log.info(logPrefix + player + " tried to get " + itemstack.toString());
 					}
 				}
 				else
@@ -121,31 +126,30 @@ public class gimme extends JavaPlugin
 		}
 		return true;
 	}
-		public void onEnable() 
-		{
-			setupPermissions();
-			configInit();
-			confSetup.setupConfigs();
-			log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
-		}
-
-		public void onDisable() 
-		{
-			log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
-		}
-
-		public boolean isDebugging(final Player player) 
-		{
-			if (debugees.containsKey(player)) 
-				return debugees.get(player);
-
-			return false;
-		}
-
-		public void setDebugging(final Player player, final boolean value) 
-		{
-			debugees.put(player, value);
-		}
-
+	
+	public void onEnable() 
+	{
+		setupPermissions();
+		configInit();
+		confSetup.setupConfigs();
+		log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
 	}
+
+	public void onDisable() 
+	{
+		log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
+	}
+
+	public boolean isDebugging(final Player player) 
+	{
+		if (debugees.containsKey(player)) 
+			return debugees.get(player);
+			return false;
+	}
+
+	public void setDebugging(final Player player, final boolean value) 
+	{
+		debugees.put(player, value);
+	}
+}
 
