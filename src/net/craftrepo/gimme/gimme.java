@@ -2,25 +2,18 @@ package net.craftrepo.gimme;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
-
-
 
 import net.craftrepo.gimme.gimmeConfiguration;
 
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginLoader;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
-
 
 // permissions 2.4 imports
 import com.nijiko.permissions.PermissionHandler;
@@ -39,12 +32,12 @@ public class gimme extends JavaPlugin
 	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
 	private final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions = null;
-	public static String logPrefix = "gimme";
+	public static String logPrefix = "[Gimme]";
 	private gimmeConfiguration confSetup;
 	public gimme plugin;
 	public static Configuration config;
 	public static String id = null;
-
+	public int amount = 64;
 
 	public void configInit()
 	{
@@ -74,39 +67,47 @@ public class gimme extends JavaPlugin
 		}
 	}
 
-	public boolean itemdeny(ItemStack args)
+	public boolean itemdeny(int args)
 	{
 		gimme.config.load();
 		String x = gimme.config.getNodeList("denied", null).toString();
-		if (args.toString().contains(x))
+		log.info(logPrefix + " " + Integer.toString(args));
+		if (x.contains(Integer.toString(args)))
+		{
 			return true;
-
+		}
 		return false;
 	}
 
 	public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String[] arg) 
 	{
-		ConcurrentHashMap<String[], ItemStack> stackmap = new ConcurrentHashMap<String[], ItemStack>();;
-		stackmap.put(arg, null);
-		ItemStack item = stackmap.get(arg);
 		Player player = (Player) sender;
+		PlayerInventory inventory = player.getInventory();
 		String command = commandArg.getName().toLowerCase();
 		if (command.equalsIgnoreCase("gimme")) 
 		{
 			if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme") || (gimme.Permissions.has(player, "gimme.*") || gimme.Permissions.has(player, "*"))) 
 			{
-				if (arg.length == 2) {
+					ItemStack itemstack = new ItemStack(Integer.valueOf(arg[0]));
 					@SuppressWarnings("unused")
-					boolean check = itemdeny(item);
-					if (check = false)
+					boolean check = itemdeny(Integer.valueOf(arg[0]));
+					if (!(itemdeny(Integer.valueOf(arg[0]))))
 					{
-						player.sendMessage("Here you go!");
-						player.getInventory().addItem(item);
+						if (arg.length == 1) 
+						{
+							itemstack.setAmount(amount);
+						}
+						if (arg.length == 2)
+						{
+							itemstack.setAmount(Integer.parseInt(arg[1]));
+						}
+							player.sendMessage("Here you go!");
+							inventory.addItem(itemstack);
 					}
 				}
 				else
 				{
-					player.sendMessage("Correct usage is /gimme [item]");
+					player.sendMessage("Correct usage is /gimme [item] {amount}");
 				}
 			} 
 			else 
@@ -116,8 +117,6 @@ public class gimme extends JavaPlugin
 			}
 			return true;
 		}
-		return true;
-	}
 
 	public void onEnable() 
 	{
@@ -138,7 +137,6 @@ public class gimme extends JavaPlugin
 			return debugees.get(player);
 
 		return false;
-
 	}
 
 	public void setDebugging(final Player player, final boolean value) 
