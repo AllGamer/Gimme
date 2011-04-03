@@ -2,7 +2,7 @@ name: Gimme
 
 main: net.craftrepo.Gimme.gimme
 
-version: 0.1
+version: 1.0.0
 
 commands:
     gimme:

@@ -533,8 +533,6 @@ public class gimme extends JavaPlugin
 			{
 				if (arg.length >= 1 && arg.length <= 2)
 				{
-					//@SuppressWarnings("unused")
-					//boolean check = itemdeny(Integer.valueOf(arg[0]));
 					Pattern p = Pattern.compile("[-]?[0-9]+");
 					Matcher m = p.matcher(arg[0]);
 					if (m.matches())
@@ -548,7 +546,6 @@ public class gimme extends JavaPlugin
 						{
 							itemstack.setAmount(Integer.parseInt(arg[1]));
 						}
-						//log.info(logPrefix + " Giving " + player + " " + itemstack.toString());
 						player.sendMessage("Here you go!");
 						inventory.addItem(itemstack);
 					}
@@ -566,7 +563,6 @@ public class gimme extends JavaPlugin
 							{
 								itemstack.setAmount(Integer.parseInt(arg[1]));
 							}
-							//log.info(logPrefix + " Giving " + player + " " + itemstack.toString());
 							player.sendMessage("Here you go!");
 							inventory.addItem(itemstack);
 						}
@@ -583,8 +579,6 @@ public class gimme extends JavaPlugin
 				{
 					if (arg.length >= 1 && arg.length <= 2)
 					{
-						//@SuppressWarnings("unused")
-						//boolean check = itemdeny(Integer.valueOf(arg[0]));
 						Pattern p = Pattern.compile("[-]?[0-9]+");
 						Matcher m = p.matcher(arg[0]);
 						if (m.matches())
