@@ -394,8 +394,8 @@ public class gimme extends JavaPlugin
 		items.put("bucketoflava", 327);
 		items.put("minecart", 328);
 		items.put("minecarts", 328);
-		items.put("cart", 238);
-		items.put("carts", 238);
+		items.put("cart", 328);
+		items.put("carts", 328);
 		items.put("saddle", 329);
 		items.put("saddles", 329);
 		items.put("leathersaddle", 329);
@@ -552,20 +552,17 @@ public class gimme extends JavaPlugin
 					else
 					{
 						int itemid = items.get(arg[0].toLowerCase());
-						if (!(itemdeny(itemid)))
+						itemstack = new ItemStack(itemid);
+						if (arg.length == 1) 
 						{
-							itemstack = new ItemStack(itemid);
-							if (arg.length == 1) 
-							{
-								itemstack.setAmount(amount);
-							}
-							if (arg.length == 2)
-							{
-								itemstack.setAmount(Integer.parseInt(arg[1]));
-							}
-							player.sendMessage("Here you go!");
-							inventory.addItem(itemstack);
+							itemstack.setAmount(amount);
 						}
+						if (arg.length == 2)
+						{
+							itemstack.setAmount(Integer.parseInt(arg[1]));
+						}
+						player.sendMessage("Here you go!");
+						inventory.addItem(itemstack);
 					}
 				}
 				else
