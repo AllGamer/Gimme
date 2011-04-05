@@ -700,41 +700,45 @@ public class gimme extends JavaPlugin
 							{
 								player.sendMessage("Correct usage is /gimme [item] {amount}");
 							}
-						} 
-						else 
-						{
-							player.sendMessage("You don't have access to this command.");
-							log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
 						}
 						return true;
 					}
 					return true;
 				}
+				else 
+				{
+					player.sendMessage("You don't have access to this command.");
+					log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
+				}
 			}
-			public void onEnable() 
-			{
-				setupPermissions();
-				configInit();
-				confSetup.setupConfigs();
-				populateItemMap();
-				log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
-			}
-
-			public void onDisable() 
-			{
-				log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
-			}
-
-			public boolean isDebugging(final Player player) 
-			{
-				if (debugees.containsKey(player)) 
-					return debugees.get(player);
-				return false;
-			}
-
-			public void setDebugging(final Player player, final boolean value) 
-			{
-				debugees.put(player, value);
-			}
+			return true;
 		}
+		return true;
+	}
+	public void onEnable() 
+	{
+		setupPermissions();
+		configInit();
+		confSetup.setupConfigs();
+		populateItemMap();
+		log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
+	}
+
+	public void onDisable() 
+	{
+		log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
+	}
+
+	public boolean isDebugging(final Player player) 
+	{
+		if (debugees.containsKey(player)) 
+			return debugees.get(player);
+		return false;
+	}
+
+	public void setDebugging(final Player player, final boolean value) 
+	{
+		debugees.put(player, value);
+	}
+}
 
