@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
@@ -524,101 +525,17 @@ public class gimme extends JavaPlugin
 
 	public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String[] arg) 
 	{
-		Player player = (Player) sender;
-		PlayerInventory inventory = player.getInventory();
-		String command = commandArg.getName().toLowerCase();
-		ItemStack itemstack;
-		MaterialData itemdata;
-		if (command.equalsIgnoreCase("gimme")) 
+		try
 		{
-			if (gimme.Permissions.has(player, "gimme.whitelist") || gimme.Permissions.has(player, "gimme.*") || (gimme.Permissions.has(player, "*")))
-			{
-				if (arg.length >= 1 && arg.length <= 2)
-				{
-					Pattern p = Pattern.compile("[-]?[0-9]+");
-					Matcher m = p.matcher(arg[0]);
-					if (m.matches())
-					{
-						String clone = arg[0];
-						String[] split = clone.split(":");
-						if (arg[0].contains(":"))
-						{
-							itemstack = new ItemStack(Integer.parseInt(split[0]));
-							itemdata = new MaterialData(Integer.parseInt(split[1]));
-							itemstack.setData(itemdata);
-							if (arg.length == 1) 
-							{
-								itemstack.setAmount(amount);
-							}
-							if (arg.length == 2)
-							{
-								itemstack.setAmount(Integer.parseInt(arg[1]));
-							}
-							player.sendMessage("Here you go!");
-							inventory.addItem(itemstack);
-						}
-						else
-						{
-							itemstack = new ItemStack(Integer.parseInt(arg[0]));
-							if (arg.length == 1) 
-							{
-								itemstack.setAmount(amount);
-							}
-							if (arg.length == 2)
-							{
-								itemstack.setAmount(Integer.parseInt(arg[1]));
-							}
-							player.sendMessage("Here you go!");
-							inventory.addItem(itemstack);
-						}
 
-					}
-					else
-					{
-						String clone = arg[0];
-						String[] split = clone.split(":");
-						if (arg[0].contains(":"))
-						{
-							int itemid = items.get(split[0].toLowerCase());
-							itemstack = new ItemStack(itemid);
-							itemdata = new MaterialData(Integer.parseInt(split[1]));
-							itemstack.setData(itemdata);
-							if (arg.length == 1) 
-							{
-								itemstack.setAmount(amount);
-							}
-							if (arg.length == 2)
-							{
-								itemstack.setAmount(Integer.parseInt(arg[1]));
-							}
-							player.sendMessage("Here you go!");
-							inventory.addItem(itemstack);
-						}
-						else
-						{
-							int itemid = items.get(arg[0].toLowerCase());
-							itemstack = new ItemStack(itemid);
-							if (arg.length == 1) 
-							{
-								itemstack.setAmount(amount);
-							}
-							if (arg.length == 2)
-							{
-								itemstack.setAmount(Integer.parseInt(arg[1]));
-							}
-							player.sendMessage("Here you go!");
-							inventory.addItem(itemstack);
-						}
-					}
-				}
-				else
-				{
-					player.sendMessage("Correct usage is /gimme [item] {amount}");
-				}
-			}
-			if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme")) 
+			Player player = (Player) sender;
+			PlayerInventory inventory = player.getInventory();
+			String command = commandArg.getName().toLowerCase();
+			ItemStack itemstack;
+			MaterialData itemdata;
+			if (command.equalsIgnoreCase("gimme")) 
 			{
-				if (!gimme.Permissions.has(player, "gimme.whitelist"))
+				if (gimme.Permissions.has(player, "gimme.whitelist") || gimme.Permissions.has(player, "gimme.*") || (gimme.Permissions.has(player, "*")))
 				{
 					if (arg.length >= 1 && arg.length <= 2)
 					{
@@ -626,31 +543,23 @@ public class gimme extends JavaPlugin
 						Matcher m = p.matcher(arg[0]);
 						if (m.matches())
 						{
+							String clone = arg[0];
+							String[] split = clone.split(":");
 							if (arg[0].contains(":"))
 							{
-								String clone = arg[0];
-								String[] split = clone.split(":");
-								if (!(itemdeny(Integer.valueOf(split[0]))))
+								itemstack = new ItemStack(Integer.parseInt(split[0]));
+								itemdata = new MaterialData(Integer.parseInt(split[1]));
+								itemstack.setData(itemdata);
+								if (arg.length == 1) 
 								{
-									itemstack = new ItemStack(Integer.parseInt(split[0]));
-									itemdata = new MaterialData(Integer.parseInt(split[1]));
-									itemstack.setData(itemdata);
-									if (arg.length == 1) 
-									{
-										itemstack.setAmount(amount);
-									}
-									if (arg.length == 2)
-									{
-										itemstack.setAmount(Integer.parseInt(arg[1]));
-									}
-									player.sendMessage("Here you go!");
-									inventory.addItem(itemstack);
+									itemstack.setAmount(amount);
 								}
-								else
+								if (arg.length == 2)
 								{
-									player.sendMessage(logPrefix + " You aren't allowed to get that item!");
-									log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									itemstack.setAmount(Integer.parseInt(arg[1]));
 								}
+								player.sendMessage("Here you go!");
+								inventory.addItem(itemstack);
 							}
 							else
 							{
@@ -666,6 +575,7 @@ public class gimme extends JavaPlugin
 								player.sendMessage("Here you go!");
 								inventory.addItem(itemstack);
 							}
+
 						}
 						else
 						{
@@ -673,12 +583,82 @@ public class gimme extends JavaPlugin
 							String[] split = clone.split(":");
 							if (arg[0].contains(":"))
 							{
-								int itemid = items.get(arg[0].toLowerCase());
-								if (!(itemdeny(itemid)))
+								int itemid = items.get(split[0].toLowerCase());
+								itemstack = new ItemStack(itemid);
+								itemdata = new MaterialData(Integer.parseInt(split[1]));
+								itemstack.setData(itemdata);
+								if (arg.length == 1) 
 								{
-									itemstack = new ItemStack(itemid);
-									itemdata = new MaterialData(Integer.parseInt(split[1]));
-									itemstack.setData(itemdata);
+									itemstack.setAmount(amount);
+								}
+								if (arg.length == 2)
+								{
+									itemstack.setAmount(Integer.parseInt(arg[1]));
+								}
+								player.sendMessage("Here you go!");
+								inventory.addItem(itemstack);
+							}
+							else
+							{
+								int itemid = items.get(arg[0].toLowerCase());
+								itemstack = new ItemStack(itemid);
+								if (arg.length == 1) 
+								{
+									itemstack.setAmount(amount);
+								}
+								if (arg.length == 2)
+								{
+									itemstack.setAmount(Integer.parseInt(arg[1]));
+								}
+								player.sendMessage("Here you go!");
+								inventory.addItem(itemstack);
+							}
+						}
+					}
+					else
+					{
+						player.sendMessage("Correct usage is /gimme [item] {amount}");
+					}
+				}
+				if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme")) 
+				{
+					if (!gimme.Permissions.has(player, "gimme.whitelist"))
+					{
+						if (arg.length >= 1 && arg.length <= 2)
+						{
+							Pattern p = Pattern.compile("[-]?[0-9]+");
+							Matcher m = p.matcher(arg[0]);
+							if (m.matches())
+							{
+								if (arg[0].contains(":"))
+								{
+									String clone = arg[0];
+									String[] split = clone.split(":");
+									if (!(itemdeny(Integer.valueOf(split[0]))))
+									{
+										itemstack = new ItemStack(Integer.parseInt(split[0]));
+										itemdata = new MaterialData(Integer.parseInt(split[1]));
+										itemstack.setData(itemdata);
+										if (arg.length == 1) 
+										{
+											itemstack.setAmount(amount);
+										}
+										if (arg.length == 2)
+										{
+											itemstack.setAmount(Integer.parseInt(arg[1]));
+										}
+										player.sendMessage("Here you go!");
+										inventory.addItem(itemstack);
+									}
+									else
+									{
+										player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+										log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									}
+								}
+								else
+								{
+									itemstack = new ItemStack(Integer.parseInt(arg[0]));
 									if (arg.length == 1) 
 									{
 										itemstack.setAmount(amount);
@@ -690,28 +670,57 @@ public class gimme extends JavaPlugin
 									player.sendMessage("Here you go!");
 									inventory.addItem(itemstack);
 								}
-								else
-								{
-									player.sendMessage(logPrefix + " You aren't allowed to get that item!");
-									log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
-								}
 							}
 							else
 							{
-								player.sendMessage("Correct usage is /gimme [item] {amount}");
+								String clone = arg[0];
+								String[] split = clone.split(":");
+								if (arg[0].contains(":"))
+								{
+									int itemid = items.get(arg[0].toLowerCase());
+									if (!(itemdeny(itemid)))
+									{
+										itemstack = new ItemStack(itemid);
+										itemdata = new MaterialData(Integer.parseInt(split[1]));
+										itemstack.setData(itemdata);
+										if (arg.length == 1) 
+										{
+											itemstack.setAmount(amount);
+										}
+										if (arg.length == 2)
+										{
+											itemstack.setAmount(Integer.parseInt(arg[1]));
+										}
+										player.sendMessage("Here you go!");
+										inventory.addItem(itemstack);
+									}
+									else
+									{
+										player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+										log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									}
+								}
+								else
+								{
+									player.sendMessage("Correct usage is /gimme [item] {amount}");
+								}
 							}
+							return true;
 						}
 						return true;
 					}
-					return true;
+					else 
+					{
+						player.sendMessage("You don't have access to this command.");
+						log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
+					}
 				}
-				else 
-				{
-					player.sendMessage("You don't have access to this command.");
-					log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
-				}
+				return true;
 			}
-			return true;
+		}
+		catch(CommandException e)
+		{
+			e.printStackTrace();
 		}
 		return true;
 	}
