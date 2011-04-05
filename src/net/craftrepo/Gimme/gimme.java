@@ -707,13 +707,12 @@ public class gimme extends JavaPlugin
 							}
 							return true;
 						}
-						return true;
 					}
-					else 
-					{
-						player.sendMessage("You don't have access to this command.");
-						log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
-					}
+				}
+				else 
+				{
+					player.sendMessage("You don't have access to this command.");
+					log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
 				}
 				return true;
 			}
