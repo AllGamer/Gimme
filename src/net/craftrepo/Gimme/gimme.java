@@ -543,10 +543,10 @@ public class gimme extends JavaPlugin
 						Matcher m = p.matcher(arg[0]);
 						if (m.matches())
 						{
-							String clone = arg[0];
-							String[] split = clone.split(":");
 							if (arg[0].contains(":"))
 							{
+								String clone = arg[0];
+								String[] split = clone.split(":");
 								itemstack = new ItemStack(Integer.parseInt(split[0]));
 								itemdata = new MaterialData(Integer.parseInt(split[1]));
 								itemstack.setData(itemdata);
@@ -579,10 +579,10 @@ public class gimme extends JavaPlugin
 						}
 						else
 						{
-							String clone = arg[0];
-							String[] split = clone.split(":");
 							if (arg[0].contains(":"))
 							{
+								String clone = arg[0];
+								String[] split = clone.split(":");
 								int itemid = items.get(split[0].toLowerCase());
 								itemstack = new ItemStack(itemid);
 								itemdata = new MaterialData(Integer.parseInt(split[1]));
@@ -673,10 +673,10 @@ public class gimme extends JavaPlugin
 							}
 							else
 							{
-								String clone = arg[0];
-								String[] split = clone.split(":");
 								if (arg[0].contains(":"))
 								{
+									String clone = arg[0];
+									String[] split = clone.split(":");
 									int itemid = items.get(arg[0].toLowerCase());
 									if (!(itemdeny(itemid)))
 									{
