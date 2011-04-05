@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -527,6 +528,7 @@ public class gimme extends JavaPlugin
 		PlayerInventory inventory = player.getInventory();
 		String command = commandArg.getName().toLowerCase();
 		ItemStack itemstack;
+		MaterialData itemdata;
 		if (command.equalsIgnoreCase("gimme")) 
 		{
 			if (gimme.Permissions.has(player, "gimme.whitelist") || gimme.Permissions.has(player, "gimme.*") || (gimme.Permissions.has(player, "*")))
@@ -538,6 +540,13 @@ public class gimme extends JavaPlugin
 					if (m.matches())
 					{
 						itemstack = new ItemStack(Integer.parseInt(arg[0]));
+						if (arg[0].contains(":"))
+						{
+							String clone = arg[0];
+							String[] split = clone.split(":");
+							itemdata = new MaterialData(Integer.parseInt(split[1]));
+							itemstack.setData(itemdata);
+						}
 						if (arg.length == 1) 
 						{
 							itemstack.setAmount(amount);
@@ -553,6 +562,13 @@ public class gimme extends JavaPlugin
 					{
 						int itemid = items.get(arg[0].toLowerCase());
 						itemstack = new ItemStack(itemid);
+						if (arg[0].contains(":"))
+						{
+							String clone = arg[0];
+							String[] split = clone.split(":");
+							itemdata = new MaterialData(Integer.parseInt(split[1]));
+							itemstack.setData(itemdata);
+						}
 						if (arg.length == 1) 
 						{
 							itemstack.setAmount(amount);
@@ -583,6 +599,13 @@ public class gimme extends JavaPlugin
 							if (!(itemdeny(Integer.valueOf(arg[0]))))
 							{
 								itemstack = new ItemStack(Integer.parseInt(arg[0]));
+								if (arg[0].contains(":"))
+								{
+									String clone = arg[0];
+									String[] split = clone.split(":");
+									itemdata = new MaterialData(Integer.parseInt(split[1]));
+									itemstack.setData(itemdata);
+								}
 								if (arg.length == 1) 
 								{
 									itemstack.setAmount(amount);
@@ -606,6 +629,13 @@ public class gimme extends JavaPlugin
 							if (!(itemdeny(itemid)))
 							{
 								itemstack = new ItemStack(itemid);
+								if (arg[0].contains(":"))
+								{
+									String clone = arg[0];
+									String[] split = clone.split(":");
+									itemdata = new MaterialData(Integer.parseInt(split[1]));
+									itemstack.setData(itemdata);
+								}
 								if (arg.length == 1) 
 								{
 									itemstack.setAmount(amount);
