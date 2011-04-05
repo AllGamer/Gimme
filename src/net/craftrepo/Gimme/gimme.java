@@ -539,46 +539,76 @@ public class gimme extends JavaPlugin
 					Matcher m = p.matcher(arg[0]);
 					if (m.matches())
 					{
-						itemstack = new ItemStack(Integer.parseInt(arg[0]));
+						String clone = arg[0];
+						String[] split = clone.split(":");
 						if (arg[0].contains(":"))
 						{
-							String clone = arg[0];
-							String[] split = clone.split(":");
+							itemstack = new ItemStack(Integer.parseInt(split[0]));
 							itemdata = new MaterialData(Integer.parseInt(split[1]));
 							itemstack.setData(itemdata);
+							if (arg.length == 1) 
+							{
+								itemstack.setAmount(amount);
+							}
+							if (arg.length == 2)
+							{
+								itemstack.setAmount(Integer.parseInt(arg[1]));
+							}
+							player.sendMessage("Here you go!");
+							inventory.addItem(itemstack);
 						}
-						if (arg.length == 1) 
+						else
 						{
-							itemstack.setAmount(amount);
+							itemstack = new ItemStack(Integer.parseInt(arg[0]));
+							if (arg.length == 1) 
+							{
+								itemstack.setAmount(amount);
+							}
+							if (arg.length == 2)
+							{
+								itemstack.setAmount(Integer.parseInt(arg[1]));
+							}
+							player.sendMessage("Here you go!");
+							inventory.addItem(itemstack);
 						}
-						if (arg.length == 2)
-						{
-							itemstack.setAmount(Integer.parseInt(arg[1]));
-						}
-						player.sendMessage("Here you go!");
-						inventory.addItem(itemstack);
+
 					}
 					else
 					{
-						int itemid = items.get(arg[0].toLowerCase());
-						itemstack = new ItemStack(itemid);
+						String clone = arg[0];
+						String[] split = clone.split(":");
 						if (arg[0].contains(":"))
 						{
-							String clone = arg[0];
-							String[] split = clone.split(":");
+							int itemid = items.get(split[0].toLowerCase());
+							itemstack = new ItemStack(itemid);
 							itemdata = new MaterialData(Integer.parseInt(split[1]));
 							itemstack.setData(itemdata);
+							if (arg.length == 1) 
+							{
+								itemstack.setAmount(amount);
+							}
+							if (arg.length == 2)
+							{
+								itemstack.setAmount(Integer.parseInt(arg[1]));
+							}
+							player.sendMessage("Here you go!");
+							inventory.addItem(itemstack);
 						}
-						if (arg.length == 1) 
+						else
 						{
-							itemstack.setAmount(amount);
+							int itemid = items.get(arg[0].toLowerCase());
+							itemstack = new ItemStack(itemid);
+							if (arg.length == 1) 
+							{
+								itemstack.setAmount(amount);
+							}
+							if (arg.length == 2)
+							{
+								itemstack.setAmount(Integer.parseInt(arg[1]));
+							}
+							player.sendMessage("Here you go!");
+							inventory.addItem(itemstack);
 						}
-						if (arg.length == 2)
-						{
-							itemstack.setAmount(Integer.parseInt(arg[1]));
-						}
-						player.sendMessage("Here you go!");
-						inventory.addItem(itemstack);
 					}
 				}
 				else
@@ -596,16 +626,35 @@ public class gimme extends JavaPlugin
 						Matcher m = p.matcher(arg[0]);
 						if (m.matches())
 						{
-							if (!(itemdeny(Integer.valueOf(arg[0]))))
+							if (arg[0].contains(":"))
 							{
-								itemstack = new ItemStack(Integer.parseInt(arg[0]));
-								if (arg[0].contains(":"))
+								String clone = arg[0];
+								String[] split = clone.split(":");
+								if (!(itemdeny(Integer.valueOf(split[0]))))
 								{
-									String clone = arg[0];
-									String[] split = clone.split(":");
+									itemstack = new ItemStack(Integer.parseInt(split[0]));
 									itemdata = new MaterialData(Integer.parseInt(split[1]));
 									itemstack.setData(itemdata);
+									if (arg.length == 1) 
+									{
+										itemstack.setAmount(amount);
+									}
+									if (arg.length == 2)
+									{
+										itemstack.setAmount(Integer.parseInt(arg[1]));
+									}
+									player.sendMessage("Here you go!");
+									inventory.addItem(itemstack);
 								}
+								else
+								{
+									player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+									log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+								}
+							}
+							else
+							{
+								itemstack = new ItemStack(Integer.parseInt(arg[0]));
 								if (arg.length == 1) 
 								{
 									itemstack.setAmount(amount);
@@ -616,84 +665,76 @@ public class gimme extends JavaPlugin
 								}
 								player.sendMessage("Here you go!");
 								inventory.addItem(itemstack);
-							}
-							else
-							{
-								player.sendMessage(logPrefix + " You aren't allowed to get that item!");
-								log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
 							}
 						}
 						else
 						{
-							int itemid = items.get(arg[0].toLowerCase());
-							if (!(itemdeny(itemid)))
+							String clone = arg[0];
+							String[] split = clone.split(":");
+							if (arg[0].contains(":"))
 							{
-								itemstack = new ItemStack(itemid);
-								if (arg[0].contains(":"))
+								int itemid = items.get(arg[0].toLowerCase());
+								if (!(itemdeny(itemid)))
 								{
-									String clone = arg[0];
-									String[] split = clone.split(":");
+									itemstack = new ItemStack(itemid);
 									itemdata = new MaterialData(Integer.parseInt(split[1]));
 									itemstack.setData(itemdata);
+									if (arg.length == 1) 
+									{
+										itemstack.setAmount(amount);
+									}
+									if (arg.length == 2)
+									{
+										itemstack.setAmount(Integer.parseInt(arg[1]));
+									}
+									player.sendMessage("Here you go!");
+									inventory.addItem(itemstack);
 								}
-								if (arg.length == 1) 
+								else
 								{
-									itemstack.setAmount(amount);
+									player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+									log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
 								}
-								if (arg.length == 2)
-								{
-									itemstack.setAmount(Integer.parseInt(arg[1]));
-								}
-								player.sendMessage("Here you go!");
-								inventory.addItem(itemstack);
 							}
 							else
 							{
-								player.sendMessage(logPrefix + " You aren't allowed to get that item!");
-								log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+								player.sendMessage("Correct usage is /gimme [item] {amount}");
 							}
+						} 
+						else 
+						{
+							player.sendMessage("You don't have access to this command.");
+							log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
 						}
+						return true;
 					}
-					else
-					{
-						player.sendMessage("Correct usage is /gimme [item] {amount}");
-					}
-				} 
+					return true;
+				}
 			}
-			else 
+			public void onEnable() 
 			{
-				player.sendMessage("You don't have access to this command.");
-				log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
+				setupPermissions();
+				configInit();
+				confSetup.setupConfigs();
+				populateItemMap();
+				log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
 			}
-			return true;
+
+			public void onDisable() 
+			{
+				log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
+			}
+
+			public boolean isDebugging(final Player player) 
+			{
+				if (debugees.containsKey(player)) 
+					return debugees.get(player);
+				return false;
+			}
+
+			public void setDebugging(final Player player, final boolean value) 
+			{
+				debugees.put(player, value);
+			}
 		}
-		return true;
-	}
-
-	public void onEnable() 
-	{
-		setupPermissions();
-		configInit();
-		confSetup.setupConfigs();
-		populateItemMap();
-		log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
-	}
-
-	public void onDisable() 
-	{
-		log.info(logPrefix + " version " + this.getDescription().getVersion() + " disabled!");
-	}
-
-	public boolean isDebugging(final Player player) 
-	{
-		if (debugees.containsKey(player)) 
-			return debugees.get(player);
-		return false;
-	}
-
-	public void setDebugging(final Player player, final boolean value) 
-	{
-		debugees.put(player, value);
-	}
-}
 
