@@ -46,7 +46,7 @@
                 <exclude name="**/*.classpath"/>
             </fileset>
         </copy>
-        <jar destfile="build/jar/Gimme-${bamboo.buildNumber}.jar" basedir="bin">
+        <jar destfile="build/jar/Gimme.jar" basedir="bin">
         </jar>
     </target>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
