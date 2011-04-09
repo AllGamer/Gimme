@@ -39,6 +39,16 @@
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <copy todir="bin">
+            <fileset dir="" includes="plugin.yml">
+                <exclude name="**/*.classpath"/>
+            </fileset>
+        </copy>
+        <jar destfile="build/jar/Gimme-${bamboo.buildNumber}.jar" basedir="bin">
+        </jar>
+    </target>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
         <copy todir="${ant.library.dir}">
             <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
