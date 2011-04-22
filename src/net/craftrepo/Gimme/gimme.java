@@ -240,7 +240,7 @@ public class gimme extends JavaPlugin
 		items.put("ironpick", 257); 
 		items.put("ironaxe", 258);
 		items.put("ironhatchet", 258);
-		items.put("flintandsteal", 259);
+		items.put("flintandsteel", 259);
 		items.put("lighter", 259);
 		items.put("apple", 260);
 		items.put("apples", 260);
@@ -497,7 +497,7 @@ public class gimme extends JavaPlugin
 
 	public static String strip(String s) 
 	{
-		String good = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		String good = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String result = "";
 		for ( int i = 0; i < s.length(); i++ ) 
 		{
@@ -542,24 +542,23 @@ public class gimme extends JavaPlugin
 	public void giveItemId(String item, String amount, Player player)
 	{
 		ItemStack itemstack;
-		MaterialData itemdata;
+		//MaterialData itemdata;
 		String clone = item;
 		PlayerInventory inventory = player.getInventory();
 		if (item.contains(":"))
 		{
 			String[] split = clone.split(":");
 			itemstack = new ItemStack(Integer.parseInt(strip(split[0])));
-			itemdata = new MaterialData(Integer.parseInt(strip(split[1])));
-			itemstack.setData(itemdata);
-			if (Integer.parseInt(amount) != 64) 
-			{
-				itemstack.setAmount(Integer.parseInt(amount));
-			}
-			if (Integer.parseInt(amount) == 64)
-			{
-				itemstack.setAmount(64);
-			}
+			//itemdata = new MaterialData(Integer.valueOf(strip(split[1])).byteValue());
+			
+			//itemstack.setData(itemdata);
+			itemstack.setDurability(Short.parseShort(split[1]));
+
+			itemstack.setAmount(Integer.parseInt(amount));
 			player.sendMessage("Here you go!");
+			//BEGIN DEBUG
+			log.info(logPrefix + "ID is: " + strip(split[0]) + ". Data vlaue is: " + strip(split[1]) + ".");
+			//END DEBUG
 			inventory.addItem(itemstack);
 		}
 		else
@@ -632,14 +631,22 @@ public class gimme extends JavaPlugin
 					if (arg.length >= 1 && arg.length <= 2)
 					{
 						Pattern p = Pattern.compile("[-]?[0-9]+");
-						Matcher m = p.matcher(arg[0]);
+						Matcher m = p.matcher(strip(arg[0]));
+						
 						if (m.matches())
 						{
-							giveItemId(arg[0], arg[1], player);
+							if (arg.length == 2)
+							{
+								giveItemId(strip(arg[0]), strip(arg[1]), player);
+							}
+							else
+							{
+								giveItemId(strip(arg[0]), "64", player);
+							}
 						}
 						else
 						{
-							giveItemName(arg[0], arg[1], player);
+							giveItemName(strip(arg[0]), strip(arg[1]), player);
 						}
 					}
 					else
@@ -659,7 +666,14 @@ public class gimme extends JavaPlugin
 							{
 								if (!(itemDeny(Integer.valueOf(strip(arg[0])))))
 								{
-									giveItemId(arg[0], arg[1], player);
+									if (arg[1] != null)
+									{
+										giveItemId(arg[0], arg[1], player);
+									}
+									else
+									{
+										giveItemId(arg[0], "64", player);
+									}
 								}
 								else
 								{
@@ -671,7 +685,14 @@ public class gimme extends JavaPlugin
 							{
 								if (!(itemDeny(Integer.valueOf(strip(arg[0])))))
 								{
-									giveItemName(arg[0], arg[1], player);
+									if (arg[1] != null)
+									{
+										giveItemName(arg[0], arg[1], player);
+									}
+									else
+									{
+										giveItemName(arg[0], "64", player);
+									}
 								}
 								else
 								{
