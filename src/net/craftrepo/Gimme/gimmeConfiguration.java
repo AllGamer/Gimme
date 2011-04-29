@@ -45,11 +45,19 @@ public class gimmeConfiguration
 					BufferedWriter out = new BufferedWriter(fstream);
 
 					out.write("#Gimme Configuration");
+					out.write("#Please only put block IDs here.\n");
+					out.write("#Don't complain if you put grass instead of 2 and it breaks...\n");
 					out.write("\n");
+					out.write("\n");
+					out.write("#Put block IDs for blacklist mode here");
 					out.write("denied:\n");
-					out.write("#Put blocks here\n");
 					out.write("    - 7\n");
 					out.write("    - 46\n");
+					out.write("\n");
+					out.write("#Put block IDs for whitelist mode here");
+					out.write("allowed:\n");
+					out.write("    - 4");
+					out.write("    - 2");
 				
 				
 					out.close();
