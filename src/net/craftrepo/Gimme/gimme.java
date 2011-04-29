@@ -11,7 +11,7 @@ import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
-import org.bukkit.material.MaterialData;
+//import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,6 +33,7 @@ public class gimme extends JavaPlugin
 {
 	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
 	public HashMap<String, Integer> items = new HashMap<String, Integer>();
+	private HashMap<Integer, Byte> inttobyte = new HashMap<Integer, Byte>();
 	private final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions = null;
 	public static String logPrefix = "[Gimme]";
@@ -41,6 +42,7 @@ public class gimme extends JavaPlugin
 	public static Configuration config;
 	public static String id = null;
 	public int amount = 64;
+	byte i = (byte)0x0;
 
 	public void populateItemMap()
 	{
@@ -88,6 +90,12 @@ public class gimme extends JavaPlugin
 		items.put("musicblock", 25);
 		items.put("bed", 26);
 		items.put("beds", 26);
+		items.put("poweredrail", 27);
+		items.put("powerrail", 27);
+		items.put("booster", 27);
+		items.put("detectorrail", 28);
+		items.put("web", 30);
+		items.put("spiderweb", 30);
 		items.put("wool", 35);
 		items.put("cloth", 35);
 		items.put("whitewool", 35);
@@ -461,12 +469,35 @@ public class gimme extends JavaPlugin
 		items.put("diode", 356);
 		items.put("cookie", 357);
 		items.put("cookies", 357);
+		items.put("cookie", 357);
+		items.put("cooky", 357);
+		items.put("cookies", 357);
 		items.put("goldmusicdisc", 2256);
 		items.put("golddisc", 2256);
 		items.put("greenmusicdisc", 2257);
 		items.put("greendisc", 2257);
 	}
 
+	private void populateIntByteMap()
+	{
+	inttobyte.put(0, (byte)0x0);
+	inttobyte.put(1, (byte)0x1);
+	inttobyte.put(2, (byte)0x2);
+	inttobyte.put(3, (byte)0x3);
+	inttobyte.put(4, (byte)0x4);
+	inttobyte.put(5, (byte)0x5);
+	inttobyte.put(6, (byte)0x6);
+	inttobyte.put(7, (byte)0x7);
+	inttobyte.put(8, (byte)0x8);
+	inttobyte.put(9, (byte)0x9);
+	inttobyte.put(10, (byte)0xA);
+	inttobyte.put(11, (byte)0xB);
+	inttobyte.put(12, (byte)0xC);
+	inttobyte.put(13, (byte)0xD);
+	inttobyte.put(14, (byte)0xE);
+	inttobyte.put(15, (byte)0xF);
+	}
+	
 	public void configInit()
 	{
 		getDataFolder().mkdirs();
@@ -549,29 +580,19 @@ public class gimme extends JavaPlugin
 		{
 			String[] split = clone.split(":");
 			itemstack = new ItemStack(Integer.parseInt(strip(split[0])));
-			//itemdata = new MaterialData(Integer.valueOf(strip(split[1])).byteValue());
-			
-			//itemstack.setData(itemdata);
 			itemstack.setDurability(Short.parseShort(split[1]));
-
-			itemstack.setAmount(Integer.parseInt(amount));
+			//itemdata = new MaterialData(inttobyte.get(split[1]));
+			//itemstack.setData(itemdata);
+			itemstack.setAmount(Integer.valueOf(amount));
+			//itemdata = new MaterialData(Integer.parseInt(strip(split[0])),inttobyte.get(split[1]));
 			player.sendMessage("Here you go!");
-			//BEGIN DEBUG
-			log.info(logPrefix + "ID is: " + strip(split[0]) + ". Data vlaue is: " + strip(split[1]) + ".");
-			//END DEBUG
+			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
 			inventory.addItem(itemstack);
 		}
 		else
 		{
 			itemstack = new ItemStack(Integer.parseInt(strip(item)));
-			if (Integer.parseInt(amount) != 64) 
-			{
-				itemstack.setAmount(Integer.parseInt(amount));
-			}
-			if (Integer.parseInt(amount) == 64)
-			{
-				itemstack.setAmount(64);
-			}
+			itemstack.setAmount(Integer.parseInt(amount));
 			player.sendMessage("Here you go!");
 			inventory.addItem(itemstack);
 		}
@@ -580,43 +601,35 @@ public class gimme extends JavaPlugin
 	public void giveItemName(String item, String amount, Player player)
 	{
 		ItemStack itemstack;
-		MaterialData itemdata;
+		//MaterialData itemdata;
 		String clone = item;
 		PlayerInventory inventory = player.getInventory();
 		if (item.contains(":"))
 		{
 			String[] split = clone.split(":");
-			int itemid = items.get(strip(split[0]).toLowerCase());
-			itemstack = new ItemStack(itemid);
-			itemdata = new MaterialData(Integer.parseInt(strip(split[1])));
-			itemstack.setData(itemdata);
-			if (Integer.parseInt(amount) != 64) 
-			{
-				itemstack.setAmount(Integer.parseInt(amount));
-			}
-			if (Integer.parseInt(amount) == 64)
-			{
-				itemstack.setAmount(64);
-			}
+			itemstack = new ItemStack(items.get(strip(split[0]).toLowerCase()));
+			//int itemid = items.get(strip(split[0]).toLowerCase());
+			//itemdata = new MaterialData(itemid,Integer.valueOf(strip(split[1])).byteValue());
+			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
+			itemstack.setDurability(Short.parseShort(split[1]));
 			player.sendMessage("Here you go!");
+			itemstack.setAmount(Integer.parseInt(amount));
 			inventory.addItem(itemstack);
 		}
 		else
 		{
-			int itemid = items.get(item.toLowerCase());
-			itemstack = new ItemStack(itemid);
-			if (Integer.parseInt(amount) != 64) 
-			{
-				itemstack.setAmount(Integer.parseInt(amount));
-			}
-			if (Integer.parseInt(amount) == 64)
-			{
-				itemstack.setAmount(64);
-			}
+			//int itemid = items.get(item.toLowerCase());
+			//itemdata = new MaterialData(itemid);
+			//player.sendMessage("Here you go!");
+			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
+			
+			itemstack = new ItemStack(items.get(item.toLowerCase()));
+			itemstack.setAmount(Integer.parseInt(amount));
 			player.sendMessage("Here you go!");
 			inventory.addItem(itemstack);
 		}
 	}
+
 
 	public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String[] arg) 
 	{
@@ -635,6 +648,8 @@ public class gimme extends JavaPlugin
 						
 						if (m.matches())
 						{
+							//String clone = arg[0];
+							//String[] split = clone.split(":");
 							if (arg.length == 2)
 							{
 								giveItemId(strip(arg[0]), strip(arg[1]), player);
@@ -707,11 +722,6 @@ public class gimme extends JavaPlugin
 							return false;
 						}
 					}
-					else 
-					{
-						player.sendMessage("You don't have access to this command.");
-						log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
-					}
 				}
 				if (gimme.Permissions.has(player, "gimme.whitelist")) 
 				{
@@ -752,11 +762,6 @@ public class gimme extends JavaPlugin
 							return false;
 						}
 					}
-					else 
-					{
-						player.sendMessage("You don't have access to this command.");
-						log.info(logPrefix + " - " + player.getDisplayName() + " tried to use command " + command + "! Denied access." );
-					}
 				}
 				return true;
 			}
@@ -776,6 +781,7 @@ public class gimme extends JavaPlugin
 		configInit();
 		confSetup.setupConfigs();
 		populateItemMap();
+		populateIntByteMap();
 		log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
 	}
 
