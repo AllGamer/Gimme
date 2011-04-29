@@ -33,7 +33,6 @@ public class gimme extends JavaPlugin
 {
 	private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
 	public HashMap<String, Integer> items = new HashMap<String, Integer>();
-	private HashMap<Integer, Byte> inttobyte = new HashMap<Integer, Byte>();
 	private final Logger log = Logger.getLogger("Minecraft");
 	public static PermissionHandler Permissions = null;
 	public static String logPrefix = "[Gimme]";
@@ -42,7 +41,6 @@ public class gimme extends JavaPlugin
 	public static Configuration config;
 	public static String id = null;
 	public int amount = 64;
-	byte i = (byte)0x0;
 
 	public void populateItemMap()
 	{
@@ -477,26 +475,6 @@ public class gimme extends JavaPlugin
 		items.put("greenmusicdisc", 2257);
 		items.put("greendisc", 2257);
 	}
-
-	private void populateIntByteMap()
-	{
-	inttobyte.put(0, (byte)0x0);
-	inttobyte.put(1, (byte)0x1);
-	inttobyte.put(2, (byte)0x2);
-	inttobyte.put(3, (byte)0x3);
-	inttobyte.put(4, (byte)0x4);
-	inttobyte.put(5, (byte)0x5);
-	inttobyte.put(6, (byte)0x6);
-	inttobyte.put(7, (byte)0x7);
-	inttobyte.put(8, (byte)0x8);
-	inttobyte.put(9, (byte)0x9);
-	inttobyte.put(10, (byte)0xA);
-	inttobyte.put(11, (byte)0xB);
-	inttobyte.put(12, (byte)0xC);
-	inttobyte.put(13, (byte)0xD);
-	inttobyte.put(14, (byte)0xE);
-	inttobyte.put(15, (byte)0xF);
-	}
 	
 	public void configInit()
 	{
@@ -606,7 +584,7 @@ public class gimme extends JavaPlugin
 		PlayerInventory inventory = player.getInventory();
 		if (item.contains(":"))
 		{
-			String[] split = clone.split(":");
+			String[] split = clone.split("[p{:}]");
 			itemstack = new ItemStack(items.get(strip(split[0]).toLowerCase()));
 			//int itemid = items.get(strip(split[0]).toLowerCase());
 			//itemdata = new MaterialData(itemid,Integer.valueOf(strip(split[1])).byteValue());
@@ -652,16 +630,16 @@ public class gimme extends JavaPlugin
 							//String[] split = clone.split(":");
 							if (arg.length == 2)
 							{
-								giveItemId(strip(arg[0]), strip(arg[1]), player);
+								giveItemId(arg[0], strip(arg[1]), player);
 							}
 							else
 							{
-								giveItemId(strip(arg[0]), "64", player);
+								giveItemId(arg[0], "64", player);
 							}
 						}
 						else
 						{
-							giveItemName(strip(arg[0]), strip(arg[1]), player);
+							giveItemName(arg[0], strip(arg[1]), player);
 						}
 					}
 					else
@@ -781,7 +759,6 @@ public class gimme extends JavaPlugin
 		configInit();
 		confSetup.setupConfigs();
 		populateItemMap();
-		populateIntByteMap();
 		log.info(logPrefix + " version " + this.getDescription().getVersion() + " enabled!");
 	}
 
