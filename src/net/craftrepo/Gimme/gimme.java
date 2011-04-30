@@ -551,7 +551,6 @@ public class gimme extends JavaPlugin
 	public void giveItemId(String item, String amount, Player player)
 	{
 		ItemStack itemstack;
-		//MaterialData itemdata;
 		String clone = item;
 		PlayerInventory inventory = player.getInventory();
 		if (item.contains(":"))
@@ -559,12 +558,8 @@ public class gimme extends JavaPlugin
 			String[] split = clone.split(":");
 			itemstack = new ItemStack(Integer.parseInt(strip(split[0])));
 			itemstack.setDurability(Short.parseShort(split[1]));
-			//itemdata = new MaterialData(inttobyte.get(split[1]));
-			//itemstack.setData(itemdata);
 			itemstack.setAmount(Integer.valueOf(amount));
-			//itemdata = new MaterialData(Integer.parseInt(strip(split[0])),inttobyte.get(split[1]));
 			player.sendMessage("Here you go!");
-			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
 			inventory.addItem(itemstack);
 		}
 		else
@@ -579,16 +574,12 @@ public class gimme extends JavaPlugin
 	public void giveItemName(String item, String amount, Player player)
 	{
 		ItemStack itemstack;
-		//MaterialData itemdata;
 		String clone = item;
 		PlayerInventory inventory = player.getInventory();
 		if (item.contains(":"))
 		{
-			String[] split = clone.split("[p{:}]");
+			String[] split = clone.split(":");
 			itemstack = new ItemStack(items.get(strip(split[0]).toLowerCase()));
-			//int itemid = items.get(strip(split[0]).toLowerCase());
-			//itemdata = new MaterialData(itemid,Integer.valueOf(strip(split[1])).byteValue());
-			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
 			itemstack.setDurability(Short.parseShort(split[1]));
 			player.sendMessage("Here you go!");
 			itemstack.setAmount(Integer.parseInt(amount));
@@ -596,11 +587,6 @@ public class gimme extends JavaPlugin
 		}
 		else
 		{
-			//int itemid = items.get(item.toLowerCase());
-			//itemdata = new MaterialData(itemid);
-			//player.sendMessage("Here you go!");
-			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
-			
 			itemstack = new ItemStack(items.get(item.toLowerCase()));
 			itemstack.setAmount(Integer.parseInt(amount));
 			player.sendMessage("Here you go!");
@@ -622,15 +608,12 @@ public class gimme extends JavaPlugin
 					if (arg.length >= 1 && arg.length <= 2)
 					{
 						Pattern p = Pattern.compile("[-]?[0-9]+");
-						Matcher m = p.matcher(strip(arg[0]));
-						
+						Matcher m = p.matcher(strip(arg[0]));		
 						if (m.matches())
 						{
-							//String clone = arg[0];
-							//String[] split = clone.split(":");
 							if (arg.length == 2)
 							{
-								giveItemId(arg[0], strip(arg[1]), player);
+								giveItemId(arg[0], arg[1], player);
 							}
 							else
 							{
@@ -639,7 +622,7 @@ public class gimme extends JavaPlugin
 						}
 						else
 						{
-							giveItemName(arg[0], strip(arg[1]), player);
+							giveItemName(arg[0], arg[1], player);
 						}
 					}
 					else
