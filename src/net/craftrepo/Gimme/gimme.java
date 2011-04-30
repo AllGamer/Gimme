@@ -475,7 +475,7 @@ public class gimme extends JavaPlugin
 		items.put("greenmusicdisc", 2257);
 		items.put("greendisc", 2257);
 	}
-	
+
 	public void configInit()
 	{
 		getDataFolder().mkdirs();
@@ -521,37 +521,75 @@ public class gimme extends JavaPlugin
 		gimme.config.load();
 		String x = gimme.config.getProperty("denied").toString();
 		String[] blacklist = x.split(" ");
-		for (String s : blacklist)
+		String arg = Integer.toString(args);
+		if (arg.contains(":"))
 		{
-			String black = strip(s);
-			if (Integer.parseInt(black) == args)
+			String clone = arg;
+			String[] split = clone.split(":");
+			int item = Integer.parseInt(split[0]);
+			for (String s : blacklist)
 			{
-				return true;
+				String black = strip(s);
+				if (Integer.parseInt(black) == item)
+				{
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
+		else
+		{
+			for (String s : blacklist)
+			{
+				String black = strip(s);
+				if (Integer.parseInt(black) == args)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 	}
-	
+
 	public boolean itemAllow(int args)
 	{
 		gimme.config.load();
 		String x = gimme.config.getProperty("allowed").toString();
 		String[] whitelist = x.split(" ");
-		for (String s : whitelist)
+		String arg = Integer.toString(args);
+
+		if (arg.contains(":"))
 		{
-			String white = strip(s);
-			if (!(Integer.parseInt(white) == args))
+			String clone = arg;
+			String[] split = clone.split(":");
+			int item = Integer.parseInt(split[0]);
+			for (String s : whitelist)
 			{
-				return true;
+				String white = strip(s);
+				if (!(Integer.parseInt(white) == item))
+				{
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
+		else
+		{
+			for (String s : whitelist)
+			{
+				String white = strip(s);
+				if (!(Integer.parseInt(white) == args))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 	public void giveItemId(String item, String amount, Player player)
 	{
 		ItemStack itemstack;
-		//MaterialData itemdata;
 		String clone = item;
 		PlayerInventory inventory = player.getInventory();
 		if (item.contains(":"))
@@ -559,12 +597,8 @@ public class gimme extends JavaPlugin
 			String[] split = clone.split(":");
 			itemstack = new ItemStack(Integer.parseInt(strip(split[0])));
 			itemstack.setDurability(Short.parseShort(split[1]));
-			//itemdata = new MaterialData(inttobyte.get(split[1]));
-			//itemstack.setData(itemdata);
 			itemstack.setAmount(Integer.valueOf(amount));
-			//itemdata = new MaterialData(Integer.parseInt(strip(split[0])),inttobyte.get(split[1]));
 			player.sendMessage("Here you go!");
-			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
 			inventory.addItem(itemstack);
 		}
 		else
@@ -579,16 +613,12 @@ public class gimme extends JavaPlugin
 	public void giveItemName(String item, String amount, Player player)
 	{
 		ItemStack itemstack;
-		//MaterialData itemdata;
 		String clone = item;
 		PlayerInventory inventory = player.getInventory();
 		if (item.contains(":"))
 		{
-			String[] split = clone.split("[p{:}]");
+			String[] split = clone.split(":");
 			itemstack = new ItemStack(items.get(strip(split[0]).toLowerCase()));
-			//int itemid = items.get(strip(split[0]).toLowerCase());
-			//itemdata = new MaterialData(itemid,Integer.valueOf(strip(split[1])).byteValue());
-			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
 			itemstack.setDurability(Short.parseShort(split[1]));
 			player.sendMessage("Here you go!");
 			itemstack.setAmount(Integer.parseInt(amount));
@@ -596,18 +626,12 @@ public class gimme extends JavaPlugin
 		}
 		else
 		{
-			//int itemid = items.get(item.toLowerCase());
-			//itemdata = new MaterialData(itemid);
-			//player.sendMessage("Here you go!");
-			//inventory.addItem(itemdata.toItemStack(Integer.parseInt(amount)));
-			
 			itemstack = new ItemStack(items.get(item.toLowerCase()));
 			itemstack.setAmount(Integer.parseInt(amount));
 			player.sendMessage("Here you go!");
 			inventory.addItem(itemstack);
 		}
 	}
-
 
 	public boolean onCommand(CommandSender sender, Command commandArg, String commandLabel, String[] arg) 
 	{
@@ -622,15 +646,12 @@ public class gimme extends JavaPlugin
 					if (arg.length >= 1 && arg.length <= 2)
 					{
 						Pattern p = Pattern.compile("[-]?[0-9]+");
-						Matcher m = p.matcher(strip(arg[0]));
-						
+						Matcher m = p.matcher(strip(arg[0]));		
 						if (m.matches())
 						{
-							//String clone = arg[0];
-							//String[] split = clone.split(":");
 							if (arg.length == 2)
 							{
-								giveItemId(arg[0], strip(arg[1]), player);
+								giveItemId(arg[0], arg[1], player);
 							}
 							else
 							{
@@ -639,7 +660,7 @@ public class gimme extends JavaPlugin
 						}
 						else
 						{
-							giveItemName(arg[0], strip(arg[1]), player);
+							giveItemName(arg[0], arg[1], player);
 						}
 					}
 					else
@@ -657,7 +678,7 @@ public class gimme extends JavaPlugin
 							Matcher m = p.matcher(arg[0]);
 							if (m.matches())
 							{
-								if (!(itemDeny(Integer.valueOf(strip(arg[0])))))
+								if (!(itemDeny(Integer.valueOf(arg[0]))))
 								{
 									if (arg[1] != null)
 									{
@@ -752,7 +773,7 @@ public class gimme extends JavaPlugin
 		}
 		return true;
 	}
-	
+
 	public void onEnable() 
 	{
 		setupPermissions();
