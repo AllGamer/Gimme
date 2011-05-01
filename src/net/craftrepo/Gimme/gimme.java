@@ -660,7 +660,14 @@ public class gimme extends JavaPlugin
 						}
 						else
 						{
-							giveItemName(arg[0], arg[1], player);
+							if (arg.length == 2)
+							{
+								giveItemName(arg[0], arg[1], player);
+							}
+							else
+							{
+								giveItemName(arg[0], "64", player);
+							}
 						}
 					}
 					else
@@ -697,7 +704,7 @@ public class gimme extends JavaPlugin
 							}
 							else
 							{
-								if (!(itemDeny(Integer.valueOf(strip(arg[0])))))
+								if (!(itemDeny(Integer.valueOf(arg[0]))))
 								{
 									if (arg[1] != null)
 									{
@@ -734,7 +741,14 @@ public class gimme extends JavaPlugin
 							{
 								if (!(itemAllow(Integer.valueOf(strip(arg[0])))))
 								{
-									giveItemId(arg[0], arg[1], player);
+									if (arg[1] != null)
+									{
+										giveItemId(arg[0], arg[1], player);
+									}
+									else
+									{
+										giveItemId(arg[0], "64", player);
+									}
 								}
 								else
 								{
@@ -746,7 +760,14 @@ public class gimme extends JavaPlugin
 							{
 								if (!(itemAllow(Integer.valueOf(strip(arg[0])))))
 								{
-									giveItemName(arg[0], arg[1], player);
+									if (arg[1] != null)
+									{
+										giveItemName(arg[0], arg[1], player);
+									}
+									else
+									{
+										giveItemName(arg[0], "64", player);
+									}
 								}
 								else
 								{
