@@ -618,7 +618,7 @@ public class gimme extends JavaPlugin
 		if (item.contains(":"))
 		{
 			String[] split = clone.split(":");
-			itemstack = new ItemStack(items.get(strip(split[0]).toLowerCase()));
+			itemstack = new ItemStack(items.get(split[0].toLowerCase()));
 			itemstack.setDurability(Short.parseShort(split[1]));
 			player.sendMessage("Here you go!");
 			itemstack.setAmount(Integer.parseInt(amount));
@@ -704,7 +704,7 @@ public class gimme extends JavaPlugin
 							}
 							else
 							{
-								if (!(itemDeny(Integer.valueOf(arg[0]))))
+								if (!(itemDeny(items.get(arg[0]))))
 								{
 									if (arg[1] != null)
 									{
@@ -739,7 +739,7 @@ public class gimme extends JavaPlugin
 							Matcher m = p.matcher(arg[0]);
 							if (m.matches())
 							{
-								if (!(itemAllow(Integer.valueOf(strip(arg[0])))))
+								if (!(itemAllow(Integer.valueOf(arg[0]))))
 								{
 									if (arg[1] != null)
 									{
@@ -758,7 +758,7 @@ public class gimme extends JavaPlugin
 							}
 							else
 							{
-								if (!(itemAllow(Integer.valueOf(strip(arg[0])))))
+								if (!(itemAllow(items.get(arg[0]))))
 								{
 									if (arg[1] != null)
 									{
