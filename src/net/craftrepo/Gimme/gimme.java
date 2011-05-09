@@ -11,13 +11,11 @@ import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
-//import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
-// permissions 2.4 imports
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
@@ -618,18 +616,32 @@ public class gimme extends JavaPlugin
 		if (item.contains(":"))
 		{
 			String[] split = clone.split(":");
-			itemstack = new ItemStack(items.get(split[0].toLowerCase()));
-			itemstack.setDurability(Short.parseShort(split[1]));
-			player.sendMessage("Here you go!");
-			itemstack.setAmount(Integer.parseInt(amount));
-			inventory.addItem(itemstack);
+			if(!items.containsKey(split[0].toLowerCase()))
+			{
+				itemstack = new ItemStack(items.get(split[0].toLowerCase()));
+				itemstack.setDurability(Short.parseShort(split[1]));
+				player.sendMessage("Here you go!");
+				itemstack.setAmount(Integer.parseInt(amount));
+				inventory.addItem(itemstack);
+			}
+			else
+			{
+				player.sendMessage("No such item " + split[0]);
+			}
 		}
 		else
 		{
-			itemstack = new ItemStack(items.get(item.toLowerCase()));
-			itemstack.setAmount(Integer.parseInt(amount));
-			player.sendMessage("Here you go!");
-			inventory.addItem(itemstack);
+			if(!items.containsKey(item.toLowerCase()))
+			{
+				itemstack = new ItemStack(items.get(item.toLowerCase()));
+				itemstack.setAmount(Integer.parseInt(amount));
+				player.sendMessage("Here you go!");
+				inventory.addItem(itemstack);
+			}
+			else
+			{
+				player.sendMessage("No such item " + item);
+			}
 		}
 	}
 
@@ -639,154 +651,161 @@ public class gimme extends JavaPlugin
 		{
 			Player player = (Player) sender;
 			String command = commandArg.getName().toLowerCase();
-			if (command.equalsIgnoreCase("gimme")) 
+			try
 			{
-				if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme"))
+				if (command.equalsIgnoreCase("gimme")) 
 				{
-					if (arg.length >= 1 && arg.length <= 2)
-					{
-						Pattern p = Pattern.compile("[-]?[0-9]+");
-						Matcher m = p.matcher(strip(arg[0]));		
-						if (m.matches())
-						{
-							if (arg.length == 2)
-							{
-								giveItemId(arg[0], arg[1], player);
-							}
-							else
-							{
-								giveItemId(arg[0], "64", player);
-							}
-						}
-						else
-						{
-							if (arg.length == 2)
-							{
-								giveItemName(arg[0], arg[1], player);
-							}
-							else
-							{
-								giveItemName(arg[0], "64", player);
-							}
-						}
-					}
-					else
-					{
-						player.sendMessage("Correct usage is /gimme [item] {amount}");
-					}
-				}
-				if (gimme.Permissions.has(player, "gimme.blacklist")) 
-				{
-					if (!gimme.Permissions.has(player, "gimme.gimme"))
+					if (player.isOp() || gimme.Permissions.has(player, "gimme.gimme"))
 					{
 						if (arg.length >= 1 && arg.length <= 2)
 						{
 							Pattern p = Pattern.compile("[-]?[0-9]+");
-							Matcher m = p.matcher(arg[0]);
+							Matcher m = p.matcher(strip(arg[0]));		
 							if (m.matches())
 							{
-								if (!(itemDeny(Integer.valueOf(arg[0]))))
+								if (arg.length == 2)
 								{
-									if (arg[1] != null)
-									{
-										giveItemId(arg[0], arg[1], player);
-									}
-									else
-									{
-										giveItemId(arg[0], "64", player);
-									}
+									giveItemId(arg[0], arg[1], player);
 								}
 								else
 								{
-									player.sendMessage(logPrefix + " You aren't allowed to get that item!");
-									log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									giveItemId(arg[0], "64", player);
 								}
 							}
 							else
 							{
-								if (!(itemDeny(items.get(arg[0]))))
+								if (arg.length == 2)
 								{
-									if (arg[1] != null)
-									{
-										giveItemName(arg[0], arg[1], player);
-									}
-									else
-									{
-										giveItemName(arg[0], "64", player);
-									}
+									giveItemName(arg[0], arg[1], player);
 								}
 								else
 								{
-									player.sendMessage(logPrefix + " You aren't allowed to get that item!");
-									log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									giveItemName(arg[0], "64", player);
 								}
 							}
 						}
 						else
 						{
 							player.sendMessage("Correct usage is /gimme [item] {amount}");
-							return false;
 						}
 					}
-				}
-				if (gimme.Permissions.has(player, "gimme.whitelist")) 
-				{
-					if (!gimme.Permissions.has(player, "gimme.gimme"))
+					if (gimme.Permissions.has(player, "gimme.blacklist")) 
 					{
-						if (arg.length >= 1 && arg.length <= 2)
+						if (!gimme.Permissions.has(player, "gimme.gimme"))
 						{
-							Pattern p = Pattern.compile("[-]?[0-9]+");
-							Matcher m = p.matcher(arg[0]);
-							if (m.matches())
+							if (arg.length >= 1 && arg.length <= 2)
 							{
-								if (!(itemAllow(Integer.valueOf(arg[0]))))
+								Pattern p = Pattern.compile("[-]?[0-9]+");
+								Matcher m = p.matcher(arg[0]);
+								if (m.matches())
 								{
-									if (arg[1] != null)
+									if (!(itemDeny(Integer.valueOf(arg[0]))))
 									{
-										giveItemId(arg[0], arg[1], player);
+										if (arg[1] != null)
+										{
+											giveItemId(arg[0], arg[1], player);
+										}
+										else
+										{
+											giveItemId(arg[0], "64", player);
+										}
 									}
 									else
 									{
-										giveItemId(arg[0], "64", player);
+										player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+										log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
 									}
 								}
 								else
 								{
-									player.sendMessage(logPrefix + " You aren't allowed to get that item!");
-									log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									if (!(itemDeny(items.get(arg[0]))))
+									{
+										if (arg[1] != null)
+										{
+											giveItemName(arg[0], arg[1], player);
+										}
+										else
+										{
+											giveItemName(arg[0], "64", player);
+										}
+									}
+									else
+									{
+										player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+										log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									}
 								}
 							}
 							else
 							{
-								if (!(itemAllow(items.get(arg[0]))))
+								player.sendMessage("Correct usage is /gimme [item] {amount}");
+								return false;
+							}
+						}
+					}
+					if (gimme.Permissions.has(player, "gimme.whitelist")) 
+					{
+						if (!gimme.Permissions.has(player, "gimme.gimme"))
+						{
+							if (arg.length >= 1 && arg.length <= 2)
+							{
+								Pattern p = Pattern.compile("[-]?[0-9]+");
+								Matcher m = p.matcher(arg[0]);
+								if (m.matches())
 								{
-									if (arg[1] != null)
+									if (!(itemAllow(Integer.valueOf(arg[0]))))
 									{
-										giveItemName(arg[0], arg[1], player);
+										if (arg[1] != null)
+										{
+											giveItemId(arg[0], arg[1], player);
+										}
+										else
+										{
+											giveItemId(arg[0], "64", player);
+										}
 									}
 									else
 									{
-										giveItemName(arg[0], "64", player);
+										player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+										log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
 									}
 								}
 								else
 								{
-									player.sendMessage(logPrefix + " You aren't allowed to get that item!");
-									log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									if (!(itemAllow(items.get(arg[0]))))
+									{
+										if (arg[1] != null)
+										{
+											giveItemName(arg[0], arg[1], player);
+										}
+										else
+										{
+											giveItemName(arg[0], "64", player);
+										}
+									}
+									else
+									{
+										player.sendMessage(logPrefix + " You aren't allowed to get that item!");
+										log.info(logPrefix + player.getDisplayName() + " tried to get " + arg[0].toString());
+									}
 								}
 							}
-						}
-						else
-						{
-							player.sendMessage("Correct usage is /gimme [item] {amount}");
-							return false;
+							else
+							{
+								player.sendMessage("Correct usage is /gimme [item] {amount}");
+								return false;
+							}
 						}
 					}
+					return true;
 				}
-				return true;
 			}
-
+			catch(NumberFormatException e)
+			{
+				e.printStackTrace();
+			}
 			return true;
+
 		}
 		catch(CommandException e)
 		{
