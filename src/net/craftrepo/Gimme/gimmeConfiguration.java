@@ -49,15 +49,15 @@ public class gimmeConfiguration
 					out.write("#Don't complain if you put grass instead of 2 and it breaks...\n");
 					out.write("\n");
 					out.write("\n");
-					out.write("#Put block IDs for blacklist mode here");
+					out.write("#Put block IDs for blacklist mode here\n");
 					out.write("denied:\n");
 					out.write("    - 7\n");
 					out.write("    - 46\n");
 					out.write("\n");
-					out.write("#Put block IDs for whitelist mode here");
+					out.write("#Put block IDs for whitelist mode here\n");
 					out.write("allowed:\n");
-					out.write("    - 4");
-					out.write("    - 2");
+					out.write("    - 4\n");
+					out.write("    - 2\n");
 				
 				
 					out.close();
