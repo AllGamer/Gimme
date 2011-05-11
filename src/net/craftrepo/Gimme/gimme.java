@@ -616,7 +616,7 @@ public class gimme extends JavaPlugin
 		if (item.contains(":"))
 		{
 			String[] split = clone.split(":");
-			if(!items.containsKey(split[0].toLowerCase()))
+			if(items.containsKey(split[0].toLowerCase()))
 			{
 				itemstack = new ItemStack(items.get(split[0].toLowerCase()));
 				itemstack.setDurability(Short.parseShort(split[1]));
@@ -631,7 +631,7 @@ public class gimme extends JavaPlugin
 		}
 		else
 		{
-			if(!items.containsKey(item.toLowerCase()))
+			if(items.containsKey(item.toLowerCase()))
 			{
 				itemstack = new ItemStack(items.get(item.toLowerCase()));
 				itemstack.setAmount(Integer.parseInt(amount));

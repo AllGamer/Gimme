@@ -38,6 +38,7 @@
             <classpath refid="gimme.classpath"/>
         </javac>
     </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target name="jar">
         <mkdir dir="build/jar"/>
         <copy todir="bin">
@@ -48,7 +49,6 @@
         <jar destfile="build/jar/Gimme.jar" basedir="bin">
         </jar>
     </target>
-    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
         <copy todir="${ant.library.dir}">
             <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
