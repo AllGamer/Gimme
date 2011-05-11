@@ -564,7 +564,7 @@ public class gimme extends JavaPlugin
 			for (String s : whitelist)
 			{
 				String white = strip(s);
-				if (!(Integer.parseInt(white) == item))
+				if (Integer.parseInt(white) == item)
 				{
 					return true;
 				}
@@ -576,7 +576,7 @@ public class gimme extends JavaPlugin
 			for (String s : whitelist)
 			{
 				String white = strip(s);
-				if (!(Integer.parseInt(white) == args))
+				if (Integer.parseInt(white) == args)
 				{
 					return true;
 				}
@@ -753,7 +753,7 @@ public class gimme extends JavaPlugin
 								Matcher m = p.matcher(arg[0]);
 								if (m.matches())
 								{
-									if (!(itemAllow(Integer.valueOf(arg[0]))))
+									if (itemAllow(Integer.valueOf(arg[0])))
 									{
 										if (arg[1] != null)
 										{
@@ -772,7 +772,7 @@ public class gimme extends JavaPlugin
 								}
 								else
 								{
-									if (!(itemAllow(items.get(arg[0]))))
+									if (itemAllow(items.get(arg[0])))
 									{
 										if (arg[1] != null)
 										{
