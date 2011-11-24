@@ -9,12 +9,12 @@ import java.util.regex.Pattern;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
@@ -36,7 +36,7 @@ public class gimme extends JavaPlugin
 	public static String logPrefix = "[Gimme]";
 	private gimmeConfiguration confSetup;
 	public gimme plugin;
-	public static Configuration config;
+	public static YamlConfiguration config;
 	public static String id = null;
 	public int amount = 64;
 
@@ -90,8 +90,10 @@ public class gimme extends JavaPlugin
 		items.put("powerrail", 27);
 		items.put("booster", 27);
 		items.put("detectorrail", 28);
+		items.put("stickypiston", 29);
 		items.put("web", 30);
 		items.put("spiderweb", 30);
+		items.put("piston", 33);
 		items.put("wool", 35);
 		items.put("cloth", 35);
 		items.put("whitewool", 35);
@@ -477,7 +479,7 @@ public class gimme extends JavaPlugin
 	public void configInit()
 	{
 		getDataFolder().mkdirs();
-		config = new Configuration(new File(this.getDataFolder(), "config.yml"));
+		config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "config.yml"));
 		confSetup = new gimmeConfiguration(this.getDataFolder(), this);
 	}
 
@@ -516,8 +518,7 @@ public class gimme extends JavaPlugin
 
 	public boolean itemDeny(int args)
 	{
-		gimme.config.load();
-		String x = gimme.config.getProperty("denied").toString();
+		String x = gimme.config.getString("denied");
 		String[] blacklist = x.split(" ");
 		String arg = Integer.toString(args);
 		if (arg.contains(":"))
@@ -551,8 +552,7 @@ public class gimme extends JavaPlugin
 
 	public boolean itemAllow(int args)
 	{
-		gimme.config.load();
-		String x = gimme.config.getProperty("allowed").toString();
+		String x = gimme.config.getString("allowed");
 		String[] whitelist = x.split(" ");
 		String arg = Integer.toString(args);
 
