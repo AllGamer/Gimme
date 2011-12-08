@@ -468,13 +468,10 @@ public class gimme extends JavaPlugin
 		items.put("cookie", 357);
 		items.put("cookies", 357);
 		items.put("cookie", 357);
-		items.put("cooky", 357);
-		items.put("cookies", 357);
 		items.put("goldmusicdisc", 2256);
 		items.put("golddisc", 2256);
 		items.put("greenmusicdisc", 2257);
 		items.put("greendisc", 2257);
-		items.put("piston", 32);
 		items.put("trapdoor", 96);
 		items.put("stonebrick", 98);
 		items.put("gate", 107);
@@ -482,7 +479,6 @@ public class gimme extends JavaPlugin
 		items.put("brickstairs", 108);
 		items.put("stonebrickstairs", 109);
 		items.put("lilypad", 111);
-		items.put("stickypiston", 29);
 		items.put("netherbrick", 112);
 		items.put("netherfence", 113);
 		items.put("netherstairs", 114);
