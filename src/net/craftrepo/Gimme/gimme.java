@@ -469,6 +469,54 @@ public class gimme extends JavaPlugin
 		items.put("golddisc", 2256);
 		items.put("greenmusicdisc", 2257);
 		items.put("greendisc", 2257);
+		items.put("trapdoor", 96);
+		items.put("stonebrick", 98);
+		items.put("gate", 107);
+		items.put("ironbars", 101);
+		items.put("brickstairs", 108);
+		items.put("stonebrickstairs", 109);
+		items.put("lilypad", 111);
+		items.put("netherbrick", 112);
+		items.put("netherfence", 113);
+		items.put("netherstairs", 114);
+		items.put("netherwart", 115);
+		items.put("enchanttable", 116);
+		items.put("brewstand", 117);
+		items.put("cauldron", 118);
+		items.put("endportal", 119);
+		items.put("endportalframe", 120);
+		items.put("endstone", 121);
+		items.put("dragonegg", 122);
+		items.put("cookie", 357);
+		items.put("map", 358);
+		items.put("watermelon", 360);
+		items.put("pumpkinseed", 361);
+		items.put("melonseed", 362);
+		items.put("steak", 364);
+		items.put("cookedchicken", 366);
+		items.put("enderpearl", 368);
+		items.put("blazerod", 369);
+		items.put("ghasttear", 370);
+		items.put("goldnugget", 371);
+		items.put("potions", 373);
+		items.put("glassbottle", 374);
+		items.put("spidereye", 375);
+		items.put("fermendedeye", 376);
+		items.put("blazepowder", 377);
+		items.put("magmacream", 378);
+		items.put("eyeofender", 381);
+		items.put("glisteringmelon", 382);
+		items.put("melon", 103);
+		items.put("glasspane", 102);
+		items.put("blocksdisc", 2258);
+		items.put("chirpdisc", 2259);
+		items.put("fardisc", 2260);
+		items.put("malldisc", 2261);
+		items.put("mellohidisc", 2262);
+		items.put("staldisc", 2263);
+		items.put("straddisc", 2264);
+		items.put("11disc", 2266);
+
 	}
 
 	public void configInit()
