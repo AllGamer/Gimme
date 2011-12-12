@@ -453,8 +453,6 @@ public class gimme extends JavaPlugin
 		items.put("lightstonedust", 348);
 		items.put("rawfish", 349);
 		items.put("cookedfish", 356);
-		items.put("blackdye", 351);
-		items.put("squiddye", 351);
 		items.put("inksac", 351);
 		items.put("bones", 352);
 		items.put("sugar", 353);
@@ -466,9 +464,6 @@ public class gimme extends JavaPlugin
 		items.put("repeaters", 356);
 		items.put("diode", 356);
 		items.put("cookie", 357);
-		items.put("cookies", 357);
-		items.put("cookie", 357);
-		items.put("cooky", 357);
 		items.put("cookies", 357);
 		items.put("goldmusicdisc", 2256);
 		items.put("golddisc", 2256);
@@ -506,7 +501,7 @@ public class gimme extends JavaPlugin
 
 	public static String strip(String s) 
 	{
-		String good = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		String good = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:";
 		String result = "";
 		for ( int i = 0; i < s.length(); i++ ) 
 		{
