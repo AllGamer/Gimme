@@ -2,12 +2,12 @@ package net.craftrepo.Gimme;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -561,8 +561,8 @@ public class gimme extends JavaPlugin
 
 	public boolean itemDeny(int args)
 	{
-		String x = gimme.config.getString("denied");
-		String[] blacklist = x.split(" ");
+		@SuppressWarnings("unchecked")
+		List<String> blacklist = (List<String>) gimme.config.getStringList("denied");
 		String arg = Integer.toString(args);
 		if (arg.contains(":"))
 		{
@@ -595,8 +595,8 @@ public class gimme extends JavaPlugin
 
 	public boolean itemAllow(int args)
 	{
-		String x = gimme.config.getString("allowed");
-		String[] whitelist = x.split(" ");
+		@SuppressWarnings("unchecked")
+		List<String> whitelist = (List<String>) gimme.config.getStringList("allowed");
 		String arg = Integer.toString(args);
 
 		if (arg.contains(":"))
@@ -850,7 +850,7 @@ public class gimme extends JavaPlugin
 			return true;
 
 		}
-		catch(CommandException e)
+		catch(/*CommandException*/Throwable e)
 		{
 			e.printStackTrace();
 		}
